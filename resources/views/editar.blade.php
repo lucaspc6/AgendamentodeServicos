@@ -31,88 +31,111 @@ use App\Http\Controllers;
             'node_modules/bootstrap/dist/css/bootstrap.min.css',
             'node_modules/bootstrap/dist/js/bootstrap.bundle.js'   
         ]) 
-
-        <script>
-			function confirmarDelete(deletar_agend) {
-				if (confirm("Realmente deseja apagar o agendamento?")) {
-					document.location = deletar_agend;
-				}  
-			}
-		</script>
-
     </head>
-
     <body>
-        <div class="container">
+        <div class="container"> 
             <div class="row">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary col-12">
-                    <a class="navbar-brand" href="#">Sistema Web</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="{{ route('index') }}">Cadastrar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#">Consultar</a>
-                            </li>
-                        </ul>
+                <nav class="navbar navbar-expand-lg bg-primary">
+                    <div class="container" style="padding-left:20px;">
+                        <a class="navbar-brand text-white" href="/">Sistema Web</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active text-white" aria-current="page" href="/">Cadastrar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('ler_agendamentos') }}">Consultar</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </nav>
             </div>
 
-            <div class="container" style="background-color: white;">
-				</br>
-				<div class="row">
-					<h5 class="card-title">Consultar - Contatos Agendados</h5>
+            <div class="row">
+                <div class="container mb-3 col-12" style="background-color: white; padding: 35px;">
+                    <h5 class="title fw-bold">Editar - Agendamento de Potenciais Clientes</h5>
+                    <p class="card-text">Sistema utilizado para agendamento de serviços</p>
+                    <p>
+                        <form action="{{ route('atualizar_agendamentos') }}" method="post">
+                            @csrf
 
-                    @if(session('mensagem'))
-						<div class="alert-alert success">
-                            <br>
-							<p>{{session('mensagem')}}</p>
-                            <br>
-						</div>
-					@endif
+                            <div class="mb-3  form-group">
+								<label for="identificacao">ID:</label>
+								<input type="text" readonly class="form-control" name="id" required id="id" value="{{ $agendamento->id; }}">
+							</div>
 
-					</br>
-					</br>
+                            <div class="mb-3  form-group">
+                                <label for="name">Nome:</label>
+                                <input type="text" id="nom" required name="nom" placeholder="Digite seu nome" class="form-control" value="{{ $agendamento->nom; }}">
+                            </div>
 
-					<div class="table-responsive">
-						<table class="table">
-							<thead class="table-active bg-primary">
-								<tr>
-									<th scope="col">Id</th>
-									<th scope="col">Nome</th>
-									<th scope="col">Telefone</th>
-									<th scope="col">Origem</th>
-									<th scope="col">Data</th>
-									<th scope="col">Observação</th>
-									<th scope="col">Ação</th>
-								</tr>
-							</thead>
+                            <div class="mb-3 form-group">
+                                <label for="phone"> Telefone:</label>
+                                <input type="text" id="tel" required name="tel" placeholder="(xx)xxxxx-xxxx" class="form-control" value="{{ $agendamento->tel; }}">
+                            </div>
 
-							<tbody id="TableData">
-								@foreach ($ler as $agendamentos)
-									<tr>
-										<td>{{$agendamentos->id}}</td>
-										<td>{{$agendamentos->nom}}</td>
-										<td>{{$agendamentos->tel}}</td>
-										<td>{{$agendamentos->orig}}</td>
-										<td>{{$agendamentos->dt_ct}}</td>
-										<td>{{$agendamentos->obs}}</td>
-										<td>
-											<a class="btn btn-primary m-1" href="{{url('agendamento/'.$agendamentos->id)}}">Editar</a>
-											<a class="btn btn-danger m-1" onclick="confirmarDelete('/agendamento/deletar/{{$agendamentos->id}}')">Excluir</a>
-										</td>
-									</tr>
-								@endforeach
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>	
+                            <div class="mb-3 form-group">
+                                <label for="origem" class="d-block mb-2">Origem:</label>
+                                <select required name="orig" id="orig" class="form-control">
+                                     @if($agendamento->orig == 'Celular')
+										<option selected>Celular</option>
+									@else
+										<option>Celular</option>
+									@endif
+
+									@if($agendamento->orig == 'Instagram')
+										<option selected>Instagram</option>
+									@else
+										<option>Instagram</option>
+									@endif
+
+									@if($agendamento->orig == 'Facebook')
+										<option selected>Facebook</option>
+									@else
+										<option>Facebook</option>
+									@endif
+
+									@if($agendamento->orig == 'WhatsApp')
+										<option selected>WhatsApp</option>
+									@else
+										<option>WhatsApp</option>
+									@endif
+
+									@if($agendamento->orig == 'Fixo')
+										<option selected>Fixo</option>
+									@else
+										<option>Fixo</option>
+									@endif
+
+									@if($agendamento->orig == 'Google Meu Negócio')
+										<option selected>Google Meu Negócio</option>
+									@else
+										<option>Google Meu Negócio</option>
+									@endif
+                                </select>
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <label for="date">Data do Contato:</label>
+                                <input type="date" class="form-control" required name="dt_ct" id="dt_ct" value="{{ $agendamento->dt_ct; }}">
+                            </div>
+                            
+                            <div class="mb-3 form-group">
+                                <label for="observacao">Observação:</label>
+                                <textarea class="form-control" name="obs" id="obs" rows="3">{{ $agendamento->obs; }}</textarea>
+                            </div>
+
+                            <div class="mb-3 form-group">
+                                <button type="submit" class="btn btn-primary mt-3">Editar</button>
+                            </div>
+                        </form>
+                    </p>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -94,6 +94,12 @@ use App\Http\Controllers;
                                 <textarea class="form-control" name="obs" id="obs" rows="3"></textarea>
                             </div>
 
+                            @if(session('mensagem'))
+								<div class="alert alert-success">
+									<p>{{session('mensagem')}}</p>
+								</div>
+							@endif
+
                             <div class="mb-3 form-group">
                                 <button type="submit" class="btn btn-primary mt-3">Cadastrar</button>
                             </div>
